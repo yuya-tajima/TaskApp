@@ -104,11 +104,11 @@ class MainActivity : AppCompatActivity() {
             override fun onQueryTextChange(text: String): Boolean {
                 Log.d("PRINT_DEBUG", "input $text")
                 val trimmedString = text.trim()
-                if (!trimmedString.isNullOrBlank()) {
+                taskResults = if (trimmedString.isNotEmpty()) {
                     Log.d("PRINT_DEBUG", "Not empty and blank")
-                    taskResults = mRealm.where(Task::class.java).beginsWith("category", trimmedString).findAll()
+                    mRealm.where(Task::class.java).beginsWith("category", trimmedString).findAll()
                 } else {
-                    taskResults = mRealm.where(Task::class.java).findAll()
+                    mRealm.where(Task::class.java).findAll()
                 }
                 reloadListView()
                 return false
@@ -121,11 +121,6 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-    }
-
-    private fun getAllTask (): RealmResults<Task> {
-        // Realmデータベースから、「すべてのデータを取得して新しい日時順に並べた結果」を取得
-        return mRealm.where(Task::class.java).findAll()
     }
 
     private fun reloadListView() {
